@@ -9,5 +9,7 @@ void main(){
 }
 
 // to do: taskStatusCount card size decrease.
-//to do: after successful delete, refresh page without calling api again?
+// to do: after successful delete, refresh page without calling api again?
+// use roboto font from asset
 
+// at 40:32
