@@ -1,5 +1,5 @@
-// Task Manager Project, in getx
-// module 19
+// Task Manager Project
+// module 19, getx implementation in task_manager app
 
 import 'package:flutter/material.dart';
 import 'package:task_manager_getx/app.dart';
