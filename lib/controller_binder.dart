@@ -7,8 +7,8 @@ class ControllerBinder extends Bindings {
   @override
   void dependencies() {
     //Get.put(()=>SignInController()); // error <----------------------------
-    Get.lazyPut(() => SignInController()); // lazy, cos if already signed in
-    Get.lazyPut(() => CountTaskByStatusController());
-    Get.lazyPut(() => NewTaskController());
+    Get.lazyPut(() => SignInController(),fenix: true); // lazy, cos if already signed in, default, fenix: false
+    Get.lazyPut(() => CountTaskByStatusController(),fenix: true);
+    Get.lazyPut(() => NewTaskController(),fenix: true);
   }
 }

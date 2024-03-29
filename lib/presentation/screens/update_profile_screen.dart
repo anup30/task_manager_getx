@@ -13,8 +13,8 @@ import '../widgets/profile_app_bar.dart';
 
 class UpdateProfileScreen extends StatefulWidget {
   const UpdateProfileScreen({super.key});
-  //static bool isThisPageOnNavigatorTop = false;
-  // in this way, UpdateProfileScreen must not be below top of navigation stack. if isActive, must be isCurrent ***********************
+  static bool isThisPageOnNavigatorTop = false;
+  // in this way, UpdateProfileScreen must not be below top of navigation stack. if isActive, must be isCurrent <--------------------<<
   // so if you leave this page, leave by pop or by pushReplacement.
   @override
   State<UpdateProfileScreen> createState() => _UpdateProfileScreenState();
@@ -36,6 +36,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> { // <-------
     _firstNameTEController.text = AuthController.userData?.firstName ??'';
     _lastNameTEController.text = AuthController.userData?.lastName ??'';
     _mobileTEController.text = AuthController.userData?.mobile ??'';
+    UpdateProfileScreen.isThisPageOnNavigatorTop=true;
   }
 
   @override
@@ -239,6 +240,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> { // <-------
     _lastNameTEController.dispose();
     _mobileTEController.dispose();
     _passwordTEController.dispose();
-    //UpdateProfileScreen.isThisPageOnNavigatorTop=false;
+    UpdateProfileScreen.isThisPageOnNavigatorTop=false;
   }
 }

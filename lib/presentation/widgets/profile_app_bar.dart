@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:task_manager_getx/app.dart';
-import 'package:task_manager_getx/presentation/controllers/sign_in_controller.dart';
+//import 'package:task_manager_getx/presentation/controllers/sign_in_controller.dart';
 import 'package:task_manager_getx/presentation/screens/auth/sign_in_screen.dart';
 import '../controllers/auth_controller.dart';
 import '../utils/app_colors.dart';
@@ -92,7 +92,7 @@ PreferredSizeWidget get profileAppBar{ // top level function, not a class //--- 
 
       child: Row(children: [
         CircleAvatar(
-          backgroundImage: imageForCircleAvatar(), //-------- set null if no image is set (initial login)
+          backgroundImage: imageForCircleAvatar(), // set null if no image is set (initial login)
         ),
         const SizedBox(width: 12,),
         Expanded(
@@ -122,8 +122,7 @@ PreferredSizeWidget get profileAppBar{ // top level function, not a class //--- 
               //     MaterialPageRoute(builder: (context) => const SignInScreen()),
               //         (route) => false,
               // );
-              Get.put(SignInController()); //-------------------- error without it
-              Get.offAll(()=> const SignInScreen()); //-----------------------------------
+              Get.offAll(()=> const SignInScreen());
             });
             /*
               await AuthController.clearUserData();
