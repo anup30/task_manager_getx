@@ -21,9 +21,16 @@ class NewTaskScreen extends StatefulWidget {
 }
 
 class _NewTaskScreenState extends State<NewTaskScreen> {
+  //final CounterController _counterController = Get.put(CounterController());
+
+  //final _countTaskByStatusController = Get.put(CountTaskByStatusController()); ///---
+  //final _newTaskController = Get.put(NewTaskController()); ///---
+
   @override
   void initState() {
     super.initState();
+    Get.put(CountTaskByStatusController()); ///---
+    Get.put(NewTaskController()); ///---
     _getDataFromApis();
   }
 
