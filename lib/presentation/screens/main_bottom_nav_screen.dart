@@ -5,6 +5,7 @@ import 'package:task_manager_getx/presentation/utils/app_colors.dart';
 
 import 'cancelled_task_screen.dart';
 import 'completed_task_screen.dart';
+//import 'package:get/get.dart' as getx;
 
 class MainBottomNavScreen extends StatefulWidget {
   const MainBottomNavScreen({super.key});
@@ -30,28 +31,24 @@ class _MainBottomNavScreenState extends State<MainBottomNavScreen> {
         selectedItemColor: AppColors.themeColor,
         unselectedItemColor: Colors.grey,
         showUnselectedLabels:true,
-        //backgroundColor: Colors.grey, xx
+        //backgroundColor: Colors.grey,
         selectedFontSize: 14,
         unselectedFontSize: 14,
-
-
         onTap: (index){
           _currentIndex=index;
-          if(mounted){ // -----> not needed? -----------------------------------
+          if(mounted){ // -----> not needed?
             setState(() {});
+            //getx.update(); --------------------------------------------------?
           }
         },
-        items: const [ // selected item expanding in size -------------------------------
+        items: const [
           BottomNavigationBarItem(
               icon: Icon(Icons.file_copy_outlined),
               label: 'New Task',
-            //backgroundColor: Colors.blue,
-
           ),
           BottomNavigationBarItem(
               icon: Icon(Icons.done),
               label: 'Completed',
-            //backgroundColor: Colors.yellow,
           ),
           BottomNavigationBarItem(
               icon: Icon(Icons.access_time_outlined),
@@ -62,7 +59,6 @@ class _MainBottomNavScreenState extends State<MainBottomNavScreen> {
               label: 'Cancelled'
           ),
         ],
-
       ),
     );
   }

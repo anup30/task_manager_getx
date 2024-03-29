@@ -170,7 +170,7 @@ class _TaskCardState extends State<TaskCard> {
     final response = await NetworkCaller.getRequest(Urls.deleteTask(id));
     _deleteTaskInProgress = false;
     if (response.isSuccess) {
-      widget.refreshList(); // not widget.refreshList ? ----------------------------------
+      widget.refreshList();
     } else {
       setState(() {});
       if (mounted) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:task_manager_getx/presentation/widgets/background_widget.dart';
 import 'package:task_manager_getx/presentation/widgets/profile_app_bar.dart';
 import 'package:task_manager_getx/presentation/widgets/snack_bar_message.dart';
@@ -25,7 +26,8 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
       canPop: false,
       onPopInvoked: (bool didPop){
         if(didPop){return;}
-        Navigator.pop(context,_wasNewIemAdded);
+        //Navigator.pop(context,_wasNewIemAdded);
+        Get.back(result: _wasNewIemAdded);
       },
       child: Scaffold(
         appBar: profileAppBar, // to hide back button from appBar, use automaticallyImplyLeading: false,

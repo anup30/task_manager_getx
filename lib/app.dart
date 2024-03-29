@@ -8,7 +8,7 @@ import 'package:task_manager_getx/presentation/utils/app_colors.dart';
 class TaskManager extends StatefulWidget {
   const TaskManager({super.key});
 
-  static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>(); //------------------------------
+  static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>(); //------- for getx ?
 
   @override
   State<TaskManager> createState() => _TaskManagerState();
@@ -17,8 +17,8 @@ class TaskManager extends StatefulWidget {
 class _TaskManagerState extends State<TaskManager> {
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp( // was MaterialApp
-      navigatorKey: TaskManager.navigatorKey, //----------------------------------
+    return GetMaterialApp( // was MaterialApp ----------------------------------
+      navigatorKey: TaskManager.navigatorKey, //---------------------------------- will be needed for getx ?
       //navigatorObservers: [],
       title: "Task Manager",
       //home: const SplashScreen(),
@@ -29,7 +29,7 @@ class _TaskManagerState extends State<TaskManager> {
         '/updateProfileScreen':(context)=> const UpdateProfileScreen(),
       },
       theme: _themeData,
-      initialBinding: ControllerBinder(),
+      initialBinding: ControllerBinder(), //------------------------------------
     );
   }
   final ThemeData _themeData = ThemeData(

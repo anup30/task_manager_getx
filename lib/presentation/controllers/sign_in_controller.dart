@@ -7,6 +7,7 @@ import '../../data/utility/urls.dart';
 import 'auth_controller.dart';
 
 class SignInController extends GetxController{
+  bool _isSuccess=false;
   bool _inProgress=false;
   String? _errorMessage;
   bool get inProgress => _inProgress; //getter
@@ -19,18 +20,17 @@ class SignInController extends GetxController{
       "password":password,
     };
     final ResponseObject response = (await NetworkCaller.postRequest(Urls.login, inputParams, fromSignIn: true));
-    _inProgress=false;
     if(response.isSuccess){
       LoginResponse loginResponse = LoginResponse.fromJson(response.responseBody);
       /// save the data to local cache
       await AuthController.saveUserData(loginResponse.userData!);
       await AuthController.saveUserToken(loginResponse.token!);
-      update();
-      return true;
+      _isSuccess=true;
     }else{
       _errorMessage= response.errorMessage;
-      update();
-      return false;
     }
+    _inProgress=false;
+    update();
+    return _isSuccess;
   }
 }
