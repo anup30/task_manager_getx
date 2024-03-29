@@ -31,7 +31,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
     super.initState();
     Get.put(CountTaskByStatusController()); ///---
     Get.put(NewTaskController()); ///---
-    //^ used if onDelete() called previously and we need to come here again latter.
+    //^ used if onDelete() called previously (for Get.off()/Get.offAll()), and we need to come here again latter.
     _getDataFromApis();
   }
 
