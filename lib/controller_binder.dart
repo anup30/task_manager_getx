@@ -6,7 +6,7 @@ import 'package:task_manager_getx/presentation/controllers/sign_in_controller.da
 class ControllerBinder extends Bindings {
   @override
   void dependencies() {
-    //Get.put(()=>SignInController()); // error <----------------------------
+    //Get.put(()=>SignInController()); // error <------
     Get.lazyPut(() => SignInController(),fenix: true); // lazy, cos if already signed in, default, fenix: false
     Get.lazyPut(() => CountTaskByStatusController(),fenix: true);
     Get.lazyPut(() => NewTaskController(),fenix: true);

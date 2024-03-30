@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:task_manager_getx/app.dart';
-//import 'package:task_manager_getx/presentation/controllers/sign_in_controller.dart';
+//import 'package:task_manager_getx/app.dart';
 import 'package:task_manager_getx/presentation/screens/auth/sign_in_screen.dart';
+import 'package:task_manager_getx/presentation/screens/update_profile_screen.dart';
 import '../controllers/auth_controller.dart';
 import '../utils/app_colors.dart';
 
@@ -17,39 +17,14 @@ PreferredSizeWidget get profileAppBar{ // top level function, not a class //--- 
     }
   }
   return AppBar(
-    automaticallyImplyLeading: false, //----------------------------------------
+    automaticallyImplyLeading: false, //-----
     backgroundColor: AppColors.themeColor,
-    //leading: null,
     title: GestureDetector(
-      /*//worked!
       onTap: () {
-        const newRouteName = '/updateProfileScreen';
-        bool isNewRouteSameAsCurrent = false;
-        Navigator.popUntil(TaskManager.navigatorKey.currentState!.context, (route) {
-          if (route.settings.name == newRouteName) {
-            //print(route.settings.name);//-------------------------------------------
-            isNewRouteSameAsCurrent = true;
-          }
-          return true; //pops none
-        });
-
-        if (!isNewRouteSameAsCurrent) {
-          Navigator.pushNamed(TaskManager.navigatorKey.currentState!.context, newRouteName);
+        if(UpdateProfileScreen.isThisPageOnNavigatorTop!=true){
+          Get.to(()=> const UpdateProfileScreen());
         }
-      },*/
-      /*onTap: () {
-        if (!UpdateProfileScreen.isThisPageOnNavigatorTop) {
-          Navigator.push(
-              TaskManager.navigatorKey.currentState!.context,
-              MaterialPageRoute(
-                  builder: (context) => const UpdateProfileScreen()),
-          );
-        }
-      },
-      */
-
-      onTap: () {
-        ///*//worked!
+        /*//also worked!
         const newRouteName = '/updateProfileScreen';
         bool isNewRouteSameAsCurrent = false;
         Navigator.popUntil(TaskManager.navigatorKey.currentState!.context, (route) {
@@ -61,10 +36,20 @@ PreferredSizeWidget get profileAppBar{ // top level function, not a class //--- 
         if(!isNewRouteSameAsCurrent){
           //Navigator.pushNamed(TaskManager.navigatorKey.currentState!.context, newRouteName);
           Get.toNamed(newRouteName);
-        }
-        //*/
+          */
 
-        /*// didn't work
+      /*//also worked!
+        const newRouteName = '/updateProfileScreen';
+        if("${ModalRoute.of(context)?.settings.name}"!=newRouteName){
+          print("${ModalRoute.of(context)?.settings.name}");
+          print(newRouteName);
+          Navigator.pushNamed(context, newRouteName);
+        }else{
+          print("Success");
+        }
+        */
+
+      /*// didn't work
         const newRouteName = '/updateProfileScreen';
         if("${ModalRoute.of(TaskManager.navigatorKey.currentState!.context)?.settings.name}"!=newRouteName){
           print("${ModalRoute.of(TaskManager.navigatorKey.currentState!.context)?.settings.name}"); //: null
@@ -74,22 +59,7 @@ PreferredSizeWidget get profileAppBar{ // top level function, not a class //--- 
           print('yahoo!');
         }
          */
-
-
-        /*//worked!
-        if("${ModalRoute.of(context)?.settings.name}"!=newRouteName){
-          print("${ModalRoute.of(context)?.settings.name}");
-          print(newRouteName);
-          Navigator.pushNamed(context, newRouteName);
-        }else{
-          print("Success");
-        }
-        */
-        /*// also worked:
-         using static bool to check if updateProfileScreen is on navigation top.
-        */
       },
-
       child: Row(children: [
         CircleAvatar(
           backgroundImage: imageForCircleAvatar(), // set null if no image is set (initial login)
@@ -115,15 +85,6 @@ PreferredSizeWidget get profileAppBar{ // top level function, not a class //--- 
         ),
         IconButton(
           onPressed: () async{
-            await AuthController.clearUserData().then((result){
-              // Navigator.pushAndRemoveUntil(
-              //   //TaskManager.navigatorKey.currentContext!,
-              //     TaskManager.navigatorKey.currentState!.context,
-              //     MaterialPageRoute(builder: (context) => const SignInScreen()),
-              //         (route) => false,
-              // );
-              Get.offAll(()=> const SignInScreen());
-            });
             /*
               await AuthController.clearUserData();
               if(TaskManager.navigatorKey.currentState!.context.mounted){ //if(mounted) --- problem
@@ -133,7 +94,17 @@ PreferredSizeWidget get profileAppBar{ // top level function, not a class //--- 
                     MaterialPageRoute(builder: (context) => const SignInScreen()),
                         (route) => false);
               }
-              */
+            */
+            await AuthController.clearUserData().then((result){
+              // Navigator.pushAndRemoveUntil(
+              //   //TaskManager.navigatorKey.currentContext!,
+              //     TaskManager.navigatorKey.currentState!.context,
+              //     MaterialPageRoute(builder: (context) => const SignInScreen()),
+              //         (route) => false,
+              // );
+              Get.offAll(()=> const SignInScreen());
+            });
+
           },
           icon: const Icon(Icons.logout),),
       ],),
