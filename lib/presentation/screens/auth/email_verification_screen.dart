@@ -1,5 +1,6 @@
 // when forgot password, comes to this page
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:task_manager_getx/presentation/screens/auth/pin_verification_screen.dart';
 import 'package:task_manager_getx/presentation/widgets/background_widget.dart';
 
@@ -107,11 +108,12 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
     if(response.isSuccess){ // response.isSuccess==true, when response.statusCode==200
       if(response.responseBody["status"]=="success"){
         if(mounted){
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context)=> PinVerificationScreen(email:email)),
-          );
+          // Navigator.push(
+          //     context,
+          //     MaterialPageRoute(
+          //         builder: (context)=> PinVerificationScreen(email:email)),
+          // );
+          Get.to(()=> PinVerificationScreen(email:email));
         }
       }else{
         if(mounted){

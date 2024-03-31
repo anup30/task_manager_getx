@@ -1,5 +1,6 @@
 // reset password if forgotten
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:task_manager_getx/presentation/screens/auth/sign_in_screen.dart';
 import 'package:task_manager_getx/presentation/widgets/background_widget.dart';
 import '../../../data/models/response_object.dart';
@@ -85,22 +86,9 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
                       visible: _recoverResetPasswordInProgress==false,
                       replacement: const Center(child: CircularProgressIndicator(),),
                       child: ElevatedButton(
-                        onPressed: () { //------------------------------------------------
-                          //to do: go to SignInScreen(?) if ...
-                          // validate pw length >=8
+                        onPressed: () {
                           if(_formKey.currentState!.validate()){
                             if(_passwordTEController.text == _confirmPasswordTEController.text){
-                              //network caller post request
-                              /*
-                              * {{BaseURL}}/RecoverResetPass
-                              *
-                              * body:
-                              * {
-                                 "email":"",
-                                 "OTP":"",
-                                 "password":""
-                                }
-                              * */
                               _recoverResetPassword();
                             }else{
                               if(mounted){
@@ -124,11 +112,12 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
                       ),),
                       TextButton(
                         onPressed: () {
-                          Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(builder: (context)=>const SignInScreen()),
-                              (route) => false
-                          );
+                          // Navigator.pushAndRemoveUntil(
+                          //     context,
+                          //     MaterialPageRoute(builder: (context)=>const SignInScreen()),
+                          //     (route) => false
+                          // );
+                          Get.offAll(()=> const SignInScreen());
                         },
                         child: const Text('Sign In'),
                       ),
@@ -163,13 +152,14 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
     if(response.isSuccess){ // response.isSuccess==true, when response.statusCode==200
       if(response.responseBody["status"]=="success"){
         if (mounted) {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const SignInScreen(),
-            ),
-            (route) => false,
-          );
+          // Navigator.pushAndRemoveUntil(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => const SignInScreen(),
+          //   ),
+          //   (route) => false,
+          // );
+          Get.offAll(()=> const SignInScreen());
         }
       }else{
         if(mounted){

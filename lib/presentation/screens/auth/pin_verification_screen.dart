@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:task_manager_getx/presentation/screens/auth/set_password_screen.dart';
 import 'package:task_manager_getx/presentation/screens/auth/sign_in_screen.dart';
 import 'package:task_manager_getx/presentation/widgets/background_widget.dart';
@@ -80,8 +81,8 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> { // otp 
                     onChanged: (value) {
 
                     },
-                    appContext: context, // ------------------------------------
-                    validator: (String? val) { //-------------------------------
+                    appContext: context, // -----
+                    validator: (String? val) { //----
                       if (val?.trim().isEmpty ?? true) {
                         return 'Enter 6 digit pin';
                       }else if(val?.trim().length != 6){
@@ -117,13 +118,12 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> { // otp 
                       ),),
                       TextButton(
                         onPressed: () {
-                          Navigator.pushAndRemoveUntil( //--------------------------------------------------/// .pushReplacement ?
-                              context,
-                              MaterialPageRoute(builder: (context)=>const SignInScreen()),
-                              (route) => false
-                              //The condition (route) => false means that no routes will be removed until the specified route (SignInScreen()) is reached.
-                            //If you want to remove all routes below the pushed route, use a predicate that always returns false (e.g., (Route<dynamic> route) => false).
-                          );
+                          // Navigator.pushAndRemoveUntil( //--------------------------------------------------/// .pushReplacement ?
+                          //     context,
+                          //     MaterialPageRoute(builder: (context)=>const SignInScreen()),
+                          //     (route) => false
+                          // );
+                          Get.offAll(()=> const SignInScreen());
                         },
                         child: const Text('Sign In'),
                       ),
@@ -147,11 +147,12 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> { // otp 
     if(response.isSuccess){ // response.isSuccess==true, when response.statusCode==200
       if(response.responseBody["status"]=="success"){
         if(mounted){
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context)=> SetPasswordScreen (email:widget.email, otp:_pinTEController.text), //SetPasswordScreen
-          ));
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //       builder: (context)=> SetPasswordScreen (email:widget.email, otp:_pinTEController.text), //SetPasswordScreen
+          // ));
+          Get.to(()=> SetPasswordScreen(email:widget.email, otp:_pinTEController.text));
         }
       }
       else{

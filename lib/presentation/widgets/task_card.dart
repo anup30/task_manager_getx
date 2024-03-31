@@ -151,7 +151,7 @@ class _TaskCardState extends State<TaskCard> {
     final response =
     await NetworkCaller.getRequest(Urls.updateTaskStatus(id, status));
     _updateTaskStatusInProgress = false;
-    if (response.isSuccess) {
+    if (response.isSuccess) { ////////////////////////////////////////////
       widget.refreshList();
       setState(() {});
     } else {
@@ -169,11 +169,11 @@ class _TaskCardState extends State<TaskCard> {
     setState(() {});
     final response = await NetworkCaller.getRequest(Urls.deleteTask(id));
     _deleteTaskInProgress = false;
-    if (response.isSuccess) {
+    if (response.isSuccess) { ///////////////////////////////////////////
       widget.refreshList();
     } else {
       setState(() {});
-      if (mounted) {
+      if (mounted) { // --------------------------------------- mounted check for getx ?
         showSnackBarMessage(
             context,
             response.errorMessage ??
