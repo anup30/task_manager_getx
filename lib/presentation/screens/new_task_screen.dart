@@ -22,19 +22,17 @@ class NewTaskScreen extends StatefulWidget {
 
 class _NewTaskScreenState extends State<NewTaskScreen> {
   //final CounterController _counterController = Get.put(CounterController());
-
   //final _countTaskByStatusController = Get.put(CountTaskByStatusController()); ///---
   //final _newTaskController = Get.put(NewTaskController()); ///---
 
   @override
   void initState() {
     super.initState();
+    _getDataFromApis();
     //Get.put(CountTaskByStatusController()); ///--- used fenix: true, in  controller_binder
     //Get.put(NewTaskController()); ///---
     //^ used if onDelete() called previously (for Get.off()/Get.offAll()), and we need to come here again latter.
-    _getDataFromApis();
   }
-
   void _getDataFromApis() async{
     Get.find<CountTaskByStatusController>().getCountByTaskStatus();
     Get.find<NewTaskController>().getNewTaskList();
@@ -99,6 +97,10 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
+          final result = await Get.to(()=> const AddNewTaskScreen());
+          if(result !=null && result==true){
+            _getDataFromApis();
+          }
           //final result = await Navigator.push(context,MaterialPageRoute(builder: (context) => const AddNewTaskScreen(),),);
           /*.then((value) => { // by .then way, without receiving result above
             if(value){
@@ -106,10 +108,6 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
               //setState(() {}),
             }
           });*/
-          final result = await Get.to( ()=> const AddNewTaskScreen());
-          if(result !=null && result==true){
-            _getDataFromApis();
-          }
         },
         backgroundColor: AppColors.themeColor,
         shape: const CircleBorder(),
