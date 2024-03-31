@@ -13,11 +13,11 @@ class CompletedTaskController extends GetxController{
   String get errorMessage => _errorMessage??'';
   TaskListWrapper get completedTaskListWrapper => _completedTaskListWrapper;
 
-  Future<bool> getNewTaskList() async{
+  Future<bool> getCompletedTaskList() async{
     bool isSuccess =false;
     _inProgress=true;
     update();
-    final response= await NetworkCaller.getRequest(Urls.newTaskList);
+    final response= await NetworkCaller.getRequest(Urls.completedTaskList); //---
     if(response.isSuccess){
       _completedTaskListWrapper= TaskListWrapper.fromJson(response.responseBody);
     }else{
