@@ -4,21 +4,21 @@ import 'package:task_manager_getx/data/services/network_caller.dart';
 
 import '../../data/utility/urls.dart';
 
-class CompletedTaskController extends GetxController{
+class ProgressTaskController extends GetxController{
   bool _inProgress=false;
   String? _errorMessage;
-  TaskListWrapper _completedTaskListWrapper = TaskListWrapper();
+  TaskListWrapper _progressTaskListWrapper = TaskListWrapper();
   bool get inProgress => _inProgress;
   String get errorMessage => _errorMessage??'';
-  TaskListWrapper get completedTaskListWrapper => _completedTaskListWrapper;
+  TaskListWrapper get progressTaskListWrapper => _progressTaskListWrapper;
 
-  Future<bool> getCompletedTaskList() async{
+  Future<bool> getProgressTaskList() async{
     bool isSuccess =false;
     _inProgress=true;
     update();
-    final response= await NetworkCaller.getRequest(Urls.completedTaskList); // url
+    final response= await NetworkCaller.getRequest(Urls.progressTaskList); // url
     if(response.isSuccess){
-      _completedTaskListWrapper= TaskListWrapper.fromJson(response.responseBody);
+      _progressTaskListWrapper= TaskListWrapper.fromJson(response.responseBody);
     }else{
       _errorMessage = response.errorMessage;
     }

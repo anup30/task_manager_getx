@@ -15,14 +15,11 @@ class CompletedTaskScreen extends StatefulWidget {
 }
 
 class _CompletedTaskScreenState extends State<CompletedTaskScreen> {
-  //bool _getAllCompletedTaskListInProgress = false;
-  //TaskListWrapper _completedTaskListWrapper = TaskListWrapper();
 
   @override
-  void initState() { // async ? ----------------------------------
+  void initState() { // async ? -----------
     super.initState();
     _getDataFromApis();
-    //_getAllCompletedTaskList(); // > setState is inside,// old way
   }
   void _getDataFromApis() async{
     Get.find<CompletedTaskController>().getCompletedTaskList();
@@ -44,7 +41,12 @@ class _CompletedTaskScreenState extends State<CompletedTaskScreen> {
                   child: Visibility(
                     visible: completedTaskController
                         .completedTaskListWrapper.taskList?.isNotEmpty ?? false,
-                    replacement: const EmptyListWidget(),
+                    replacement: const Center(
+                      child: SingleChildScrollView( //solved: Refresh not working for 'No Items'?
+                        physics: AlwaysScrollableScrollPhysics(),
+                        child: EmptyListWidget(),
+                      ),
+                    ),
                     child: ListView.builder(
                       itemCount: completedTaskController
                           .completedTaskListWrapper.taskList?.length ?? 0,
@@ -66,25 +68,4 @@ class _CompletedTaskScreenState extends State<CompletedTaskScreen> {
       ),
     );
   }
-  // Future<void> _getAllCompletedTaskList() async {
-  //   _getAllCompletedTaskListInProgress = true;
-  //   if(!mounted){return;}
-  //   setState(() {});
-  //   final response = await NetworkCaller.getRequest(Urls.completedTaskList);
-  //   if (response.isSuccess) {
-  //     _completedTaskListWrapper = TaskListWrapper.fromJson(response.responseBody);
-  //     _getAllCompletedTaskListInProgress = false;
-  //     if(!mounted){return;}
-  //     setState(() {});
-  //   } else {
-  //     _getAllCompletedTaskListInProgress = false;
-  //     if(!mounted){return;}
-  //     setState(() {});
-  //     showSnackBarMessage(
-  //         context,
-  //         response.errorMessage ??
-  //             'Get Completed task list has been failed'
-  //     );
-  //   }
-  // }
 }

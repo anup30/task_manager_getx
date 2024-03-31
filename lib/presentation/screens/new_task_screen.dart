@@ -72,7 +72,12 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                       child: Visibility(
                         visible: newTaskController
                             .newTaskListWrapper.taskList?.isNotEmpty ?? false,
-                        replacement: const EmptyListWidget(),
+                        replacement: const Center(
+                          child: SingleChildScrollView( //solved: Refresh not working for 'No Items'?
+                            physics: AlwaysScrollableScrollPhysics(),
+                            child: EmptyListWidget(),
+                          ),
+                        ),
                         child: ListView.builder(
                           itemCount: newTaskController
                               .newTaskListWrapper.taskList?.length ?? 0,

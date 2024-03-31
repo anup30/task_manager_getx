@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
+import 'package:task_manager_getx/presentation/controllers/cancelled_task_controller.dart';
 import 'package:task_manager_getx/presentation/controllers/completed_task_controller.dart';
 import 'package:task_manager_getx/presentation/controllers/count_task_by_status_controller.dart';
 import 'package:task_manager_getx/presentation/controllers/new_task_controller.dart';
+import 'package:task_manager_getx/presentation/controllers/progress_task_controller.dart';
 import 'package:task_manager_getx/presentation/controllers/sign_in_controller.dart';
 
 class ControllerBinder extends Bindings {
@@ -12,5 +14,7 @@ class ControllerBinder extends Bindings {
     Get.lazyPut(() => CountTaskByStatusController(),fenix: true); // try late instead of fenix in find? (30.3.24 support class)
     Get.lazyPut(() => NewTaskController(),fenix: true);
     Get.lazyPut(() => CompletedTaskController(),fenix: true);
+    Get.lazyPut(() => ProgressTaskController(),fenix: true);
+    Get.lazyPut(() => CancelledTaskController(),fenix: true);
   }
 }
