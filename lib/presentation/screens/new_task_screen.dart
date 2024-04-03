@@ -28,7 +28,7 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
   @override
   void initState() {
     super.initState();
-    _getDataFromApis();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) { _getDataFromApis();});
     //Get.put(CountTaskByStatusController()); ///--- used fenix: true, in  controller_binder
     //Get.put(NewTaskController()); ///---
     //^ used if onDelete() called previously (for Get.off()/Get.offAll()), and we need to come here again latter.

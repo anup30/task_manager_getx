@@ -87,7 +87,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             );
                           },
                         ),
-                      ),
+                  ),
                   const SizedBox(height: 60,),
                   Center(
                     child: TextButton(

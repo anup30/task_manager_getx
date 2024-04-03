@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:task_manager_getx/presentation/controllers/auth_controller.dart';
 import 'package:task_manager_getx/presentation/screens/main_bottom_nav_screen.dart';
@@ -188,14 +189,13 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> { // <-------
     String? photo;
     _updateProfileInProgress =true;
     setState(() {});
-
     Map<String,dynamic> inputParams ={
       "email":_emailTEController.text,
       "firstName":_firstNameTEController.text.trim(),
       "lastName":_lastNameTEController.text.trim(),
       "mobile":_mobileTEController.text.trim(),
-      //"password":"1234",
-      //"photo":""
+      //"password":"anup1234",
+      //"photo":"" // below
     };
     if(_passwordTEController.text.isNotEmpty){
       inputParams["password"] = _passwordTEController.text;
@@ -203,12 +203,12 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> { // <-------
     if(_pickedImage != null){
       //convert image to base64 first, before sending (multipart format - for big files)
       List<int> bytes= File(_pickedImage!.path).readAsBytesSync(); // import 'dart:io';
-      String photo = base64Encode(bytes);
+      String photo = base64Encode(bytes); //---------------------------------------------------
       inputParams['photo']= photo;
     }
     final response = await NetworkCaller.postRequest(Urls.updateProfile, inputParams);
     _updateProfileInProgress=false;
-    //setState(() {}); ///
+    setState(() {}); ///
     if(response.isSuccess){
       if(response.responseBody['status']=='success'){
         UserData userData= UserData(
@@ -219,12 +219,15 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> { // <-------
             photo: photo
         );
         await AuthController.saveUserData(userData);
+        //AuthController.userData?.photo = photo; //didn't work -----------------
+        print("AuthController.saveUserData() called------------------------------------------------");
+      }else{
+        print("false is: response.responseBody['status']=='success'----------------------------------------");
       }
       //setState(() {}); ///
       if(mounted){
-        Navigator.pushAndRemoveUntil(context,
-            MaterialPageRoute(builder: (context)=>const MainBottomNavScreen()),
-                (route) => false);
+        //Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context)=>const MainBottomNavScreen()),(route) => false);
+        Get.offAll(()=> const MainBottomNavScreen());
       }
     }else{
       if(mounted){

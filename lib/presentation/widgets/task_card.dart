@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:task_manager_getx/presentation/widgets/snack_bar_message.dart';
+import 'package:get/get.dart';
+import 'package:task_manager_getx/presentation/controllers/delete_task_controller.dart';
+import 'package:task_manager_getx/presentation/controllers/update_task_controller.dart';
 import '../../data/models/task_item.dart';
-import '../../data/services/network_caller.dart';
-import '../../data/utility/urls.dart';
 import '../utils/app_colors.dart';
 
 class TaskCard extends StatefulWidget {
@@ -12,15 +12,15 @@ class TaskCard extends StatefulWidget {
     required this.refreshList,
   });
   final TaskItem taskItem;
-  final VoidCallback refreshList; //-------------------------------------------- can it take 2 functions ?
+  final VoidCallback refreshList;
   @override
   State<TaskCard> createState() => _TaskCardState();
 }
 
 class _TaskCardState extends State<TaskCard> {
-  bool _updateTaskStatusInProgress = false;
-  bool _deleteTaskInProgress = false;
   Color chipColor=AppColors.themeColor;
+  final _updateTaskController = Get.find<UpdateTaskController>();
+  final _deleteTaskController = Get.find<DeleteTaskController>();
   @override
   void initState() {
     super.initState();
@@ -58,27 +58,34 @@ class _TaskCardState extends State<TaskCard> {
                     color:MaterialStateProperty.all(chipColor),
                 ),
                 const Spacer(),
-                Visibility(
-                  visible: _updateTaskStatusInProgress==false,
-                  replacement: const CircularProgressIndicator(),
-                  child: IconButton(
-                    padding: EdgeInsets.zero, //-------------------------------
-                      onPressed: (){
-                        _showUpdateStatusDialog(widget.taskItem.sId!);
-                      },
-                      icon: const Icon(Icons.edit,color: Colors.green,)
-                  ),
+                GetBuilder<UpdateTaskController>( // getx ----
+                    builder: (updateTaskController){
+                      return Visibility(
+                        visible: updateTaskController.inProgress==false,
+                        replacement: const CircularProgressIndicator(),
+                        child: IconButton(
+                            padding: EdgeInsets.zero,
+                            onPressed: (){
+                              _showUpdateStatusDialog(widget.taskItem.sId!);
+                            },
+                            icon: const Icon(Icons.edit,color: Colors.green,)
+                        ),
+                      );
+                    }
                 ),
-                Visibility(
-                  visible: _deleteTaskInProgress==false,
-                  replacement: const CircularProgressIndicator(),
-                  child: IconButton(
-                      padding:  EdgeInsets.zero, //------------------------------
-                      onPressed: (){
-                        _deleteTaskById(widget.taskItem.sId!);
-                      },
-                      icon: const Icon(Icons.delete_outline,color: Colors.red,)),
-                ),
+                GetBuilder<DeleteTaskController>(
+                    builder: (deleteTaskController){
+                      return Visibility(
+                        visible: deleteTaskController.inProgress==false,
+                        replacement: const CircularProgressIndicator(),
+                        child: IconButton(
+                            padding:  EdgeInsets.zero,
+                            onPressed: (){
+                              _deleteTaskById(widget.taskItem.sId!);
+                            },
+                            icon: const Icon(Icons.delete_outline,color: Colors.red,)),
+                      );
+                    })
               ],
             )
           ],
@@ -146,39 +153,15 @@ class _TaskCardState extends State<TaskCard> {
     return widget.taskItem.status == status;
   }
   Future<void> _updateTaskById(String id, String status) async {
-    _updateTaskStatusInProgress = true;
-    setState(() {});
-    final response =
-    await NetworkCaller.getRequest(Urls.updateTaskStatus(id, status));
-    _updateTaskStatusInProgress = false;
-    if (response.isSuccess) { ////////////////////////////////////////////
+    final result= await _updateTaskController.updateTaskById(id, status);
+    if(result){
       widget.refreshList();
-      setState(() {});
-    } else {
-      setState(() {});
-      if (mounted) {
-        showSnackBarMessage(
-            context,
-            response.errorMessage ??
-                'Update task status has been failed');
-      }
     }
   }
   Future<void> _deleteTaskById(String id) async {
-    _deleteTaskInProgress = true;
-    setState(() {});
-    final response = await NetworkCaller.getRequest(Urls.deleteTask(id));
-    _deleteTaskInProgress = false;
-    if (response.isSuccess) { ///////////////////////////////////////////
+    final result= await _deleteTaskController.deleteTaskById(id);
+    if(result){
       widget.refreshList();
-    } else {
-      setState(() {});
-      if (mounted) { // --------------------------------------- mounted check for getx ?
-        showSnackBarMessage(
-            context,
-            response.errorMessage ??
-                'Delete task has been failed');
-      }
     }
   }
 }

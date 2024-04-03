@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-//import 'package:task_manager_getx/app.dart';
 import 'package:task_manager_getx/presentation/screens/auth/sign_in_screen.dart';
 import 'package:task_manager_getx/presentation/screens/update_profile_screen.dart';
 import '../controllers/auth_controller.dart';
@@ -11,17 +10,22 @@ PreferredSizeWidget get profileAppBar{ // top level function, not a class //--- 
 //PreferredSizeWidget profileAppBar(BuildContext context){ // no get, get can't receive arguments
   MemoryImage? imageForCircleAvatar(){
     try{
+      print("in try block, -----------------------------------------------------------------");
+      print("AuthController.userData?.photo= ${AuthController.userData?.photo}"); // null
+      print("\n\n\n");
       return MemoryImage(base64Decode(AuthController.userData!.photo!));
     }catch(e){
+      print("in catch block, -----------------------------------------------------------------");
+      print("$e");
       return null;
     }
   }
   return AppBar(
-    automaticallyImplyLeading: false, //-----
+    automaticallyImplyLeading: false, //
     backgroundColor: AppColors.themeColor,
     title: GestureDetector(
       onTap: () {
-        if(UpdateProfileScreen.isThisPageOnNavigatorTop!=true){
+        if(UpdateProfileScreen.isThisPageOnNavigatorTop==false){
           Get.to(()=> const UpdateProfileScreen());
         }
         /*//also worked!
