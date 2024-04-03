@@ -58,34 +58,39 @@ class _TaskCardState extends State<TaskCard> {
                     color:MaterialStateProperty.all(chipColor),
                 ),
                 const Spacer(),
-                GetBuilder<UpdateTaskController>( // getx ----
-                    builder: (updateTaskController){
-                      return Visibility(
-                        visible: updateTaskController.inProgress==false,
-                        replacement: const CircularProgressIndicator(),
-                        child: IconButton(
+                Visibility(
+                  visible: _updateTaskController.inProgress == false,
+                  replacement: const CircularProgressIndicator(),
+                  child: GetBuilder<UpdateTaskController>( // getx ----
+                      builder: (updateTaskController){
+                        return IconButton(
                             padding: EdgeInsets.zero,
-                            onPressed: (){
+                            onPressed: () {
                               _showUpdateStatusDialog(widget.taskItem.sId!);
                             },
-                            icon: const Icon(Icons.edit,color: Colors.green,)
-                        ),
-                      );
-                    }
+                            icon: const Icon(
+                              Icons.edit,
+                              color: Colors.green,
+                            )
+                        );
+                      })
                 ),
-                GetBuilder<DeleteTaskController>(
-                    builder: (deleteTaskController){
-                      return Visibility(
-                        visible: deleteTaskController.inProgress==false,
-                        replacement: const CircularProgressIndicator(),
-                        child: IconButton(
-                            padding:  EdgeInsets.zero,
-                            onPressed: (){
-                              _deleteTaskById(widget.taskItem.sId!);
-                            },
-                            icon: const Icon(Icons.delete_outline,color: Colors.red,)),
-                      );
-                    })
+                Visibility( // GetBuilder in Visibility, try other way -----------------------
+                    visible: _deleteTaskController.inProgress == false,
+                    replacement: const CircularProgressIndicator(),
+                    child: GetBuilder<DeleteTaskController>(
+                        builder: (deleteTaskController) {
+                      return IconButton(
+                          padding: EdgeInsets.zero,
+                          onPressed: () {
+                            _deleteTaskById(widget.taskItem.sId!);
+                          },
+                          icon: const Icon(
+                            Icons.delete_outline,
+                            color: Colors.red,
+                          ));
+                    }),
+                ),
               ],
             )
           ],
