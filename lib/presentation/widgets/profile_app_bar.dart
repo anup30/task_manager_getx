@@ -26,7 +26,7 @@ PreferredSizeWidget get profileAppBar{ // top level function, not a class //--- 
     title: GestureDetector(
       onTap: () {
         if(UpdateProfileScreen.isThisPageOnNavigatorTop==false){
-          Get.to(()=> UpdateProfileScreen());
+          Get.to(()=> const UpdateProfileScreen());
         }
         /*//also worked!
         const newRouteName = '/updateProfileScreen';
@@ -42,7 +42,7 @@ PreferredSizeWidget get profileAppBar{ // top level function, not a class //--- 
           Get.toNamed(newRouteName);
           */
 
-      /*//also worked!
+        /*//also worked!
         const newRouteName = '/updateProfileScreen';
         if("${ModalRoute.of(context)?.settings.name}"!=newRouteName){
           print("${ModalRoute.of(context)?.settings.name}");
@@ -53,7 +53,7 @@ PreferredSizeWidget get profileAppBar{ // top level function, not a class //--- 
         }
         */
 
-      /*// didn't work
+        /*// didn't work
         const newRouteName = '/updateProfileScreen';
         if("${ModalRoute.of(TaskManager.navigatorKey.currentState!.context)?.settings.name}"!=newRouteName){
           print("${ModalRoute.of(TaskManager.navigatorKey.currentState!.context)?.settings.name}"); //: null
