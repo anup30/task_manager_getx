@@ -1,14 +1,10 @@
 // when forgot password, comes to this page
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:task_manager_getx/presentation/controllers/email_verification_controller.dart';
 import 'package:task_manager_getx/presentation/screens/auth/pin_verification_screen.dart';
 import 'package:task_manager_getx/presentation/widgets/background_widget.dart';
 
-import '../../../data/models/response_object.dart';
-import '../../../data/services/network_caller.dart';
-import '../../../data/utility/urls.dart';
-import '../../widgets/snack_bar_message.dart';
-// api: RecoverVerifyEmail
 class EmailVerificationScreen extends StatefulWidget { // comes here, from "Forgot password?"
   const EmailVerificationScreen({super.key});
 
@@ -19,7 +15,8 @@ class EmailVerificationScreen extends StatefulWidget { // comes here, from "Forg
 class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   final TextEditingController _emailTEController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  bool _verifyEmailInProgress = false;
+
+  final EmailVerificationController _emailVerificationController = Get.find<EmailVerificationController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,18 +57,22 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                   const SizedBox(height: 16),
                   SizedBox(
                     width: double.infinity,
-                    child: Visibility(
-                      visible: _verifyEmailInProgress ==false,
-                      replacement: const Center(child: CircularProgressIndicator()),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          /// to do: go to PinVerificationScreen if ...
-                          if(_formKey.currentState!.validate()){
-                            _verifyEmail(_emailTEController.text.trim(),);
-                          }
-                        },
-                        child: const Icon(Icons.arrow_forward_ios_rounded), // arrow_forward_ios_rounded, arrow_circle_right_outlined
-                      ),
+                    child: GetBuilder<EmailVerificationController>(
+                      builder: (emailVerificationController){
+                        return Visibility(
+                          visible: emailVerificationController.inProgress ==false,
+                          replacement: const Center(child: CircularProgressIndicator()),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              /// to do: go to PinVerificationScreen if ...
+                              if(_formKey.currentState!.validate()){
+                                _verifyEmail();
+                              }
+                            },
+                            child: const Icon(Icons.arrow_forward_ios_rounded), // arrow_forward_ios_rounded, arrow_circle_right_outlined
+                          ),
+                        );
+                      },
                     ),
                   ),
                   const SizedBox(height: 32,),
@@ -99,34 +100,46 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
     );
   }
 
-  Future<void> _verifyEmail(String email) async{
-    _verifyEmailInProgress =true;
-    setState(() {});
-    final ResponseObject response = await NetworkCaller.getRequest(Urls.recoverVerifyEmail(email));
-    _verifyEmailInProgress =false;
-    setState(() {});
-    if(response.isSuccess){ // response.isSuccess==true, when response.statusCode==200
-      if(response.responseBody["status"]=="success"){
-        if(mounted){
-          // Navigator.push(
-          //     context,
-          //     MaterialPageRoute(
-          //         builder: (context)=> PinVerificationScreen(email:email)),
-          // );
-          Get.to(()=> PinVerificationScreen(email:email));
-        }
-      }else{
-        if(mounted){
-          setState(() {});
-          showSnackBarMessage(context, response.errorMessage ?? "Couldn't verify email, please try again!");
-        }
-      }
-    }else{
+  Future<void> _verifyEmail() async{
+    final bool response = await _emailVerificationController.verifyEmail(_emailTEController.text.trim());
+    if(response){
       if(mounted){
-        setState(() {});
-        showSnackBarMessage(context, response.errorMessage ?? 'Email verification failed, please try again!');
+        // Navigator.push(
+        //     context,
+        //     MaterialPageRoute(
+        //         builder: (context)=> PinVerificationScreen(email:email)),
+        // );
+        Get.to(()=> PinVerificationScreen(email:_emailTEController.text.trim()));
       }
     }
+
+    // _verifyEmailInProgress =true;
+    // setState(() {});
+    // final ResponseObject response = await NetworkCaller.getRequest(Urls.recoverVerifyEmail(email));
+    // _verifyEmailInProgress =false;
+    // setState(() {});
+    // if(response.isSuccess){ // response.isSuccess==true, when response.statusCode==200
+    //   if(response.responseBody["status"]=="success"){
+    //     if(mounted){
+    //       // Navigator.push(
+    //       //     context,
+    //       //     MaterialPageRoute(
+    //       //         builder: (context)=> PinVerificationScreen(email:email)),
+    //       // );
+    //       Get.to(()=> PinVerificationScreen(email:email));
+    //     }
+    //   }else{
+    //     if(mounted){
+    //       setState(() {});
+    //       showSnackBarMessage(context, response.errorMessage ?? "Couldn't verify email, please try again!");
+    //     }
+    //   }
+    // }else{
+    //   if(mounted){
+    //     setState(() {});
+    //     showSnackBarMessage(context, response.errorMessage ?? 'Email verification failed, please try again!');
+    //   }
+    // }
   }
 
   @override

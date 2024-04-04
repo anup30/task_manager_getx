@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:task_manager_getx/presentation/controllers/pin_verification_controller.dart';
 import 'package:task_manager_getx/presentation/screens/auth/set_password_screen.dart';
 import 'package:task_manager_getx/presentation/screens/auth/sign_in_screen.dart';
 import 'package:task_manager_getx/presentation/widgets/background_widget.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import '../../../data/models/response_object.dart';
-import '../../../data/services/network_caller.dart';
-import '../../../data/utility/urls.dart';
-import '../../widgets/snack_bar_message.dart';
+
 
 class PinVerificationScreen extends StatefulWidget { // comes here, from "EmailVerificationScreen"
   final String email;
@@ -20,7 +18,8 @@ class PinVerificationScreen extends StatefulWidget { // comes here, from "EmailV
 class _PinVerificationScreenState extends State<PinVerificationScreen> { // otp pin verification
   final TextEditingController _pinTEController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  bool _pinVerificationInProgress =false;
+
+  final PinVerificationController _pinVerificationController = Get.find<PinVerificationController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -94,19 +93,35 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> { // otp 
                   const SizedBox(height: 16),
                   SizedBox(
                     width: double.infinity,
-                    child: Visibility(
-                      visible: _pinVerificationInProgress ==false,
-                      replacement: const Center(child: CircularProgressIndicator(),),
-                      child: ElevatedButton(
-                        onPressed: (){
-                          //to do: go to SetPasswordScreen if 6 digit pin is correct.
-                          if(_formKey.currentState!.validate()){
-                            _pinVerification();
-                          }
-                        },
-                        child: const Text('Verify'), // go to set password page
-                      ),
-                    ),
+                      child: GetBuilder<PinVerificationController>(
+                          builder: (pinVerificationController){
+                            return Visibility( //-----------------------------------------------------------------
+                              visible: pinVerificationController.inProgress ==false,
+                              replacement: const Center(child: CircularProgressIndicator(),),
+                              child: ElevatedButton(
+                                onPressed: (){
+                                  //to do: go to SetPasswordScreen if 6 digit pin is correct.
+                                  if(_formKey.currentState!.validate()){
+                                    _pinVerification();
+                                  }
+                                },
+                                child: const Text('Verify'), // go to set password page
+                              ),
+                            );
+                          }),
+                    // child: Visibility( //---------
+                    //   visible: _pinVerificationInProgress ==false,
+                    //   replacement: const Center(child: CircularProgressIndicator(),),
+                    //   child: ElevatedButton(
+                    //     onPressed: (){
+                    //       //to do: go to SetPasswordScreen if 6 digit pin is correct.
+                    //       if(_formKey.currentState!.validate()){
+                    //         _pinVerification();
+                    //       }
+                    //     },
+                    //     child: const Text('Verify'), // go to set password page
+                    //   ),
+                    // ),
                   ),
                   const SizedBox(height: 32,),
                   Row(
@@ -139,33 +154,44 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> { // otp 
   }
 
   Future<void> _pinVerification() async{
-    _pinVerificationInProgress =true;
-    setState(() {});
-    final ResponseObject response = await NetworkCaller.getRequest(Urls.recoverVerifyOTP(widget.email,_pinTEController.text));
-    _pinVerificationInProgress =false;
-    setState(() {});
-    if(response.isSuccess){ // response.isSuccess==true, when response.statusCode==200
-      if(response.responseBody["status"]=="success"){
-        if(mounted){
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //       builder: (context)=> SetPasswordScreen (email:widget.email, otp:_pinTEController.text), //SetPasswordScreen
-          // ));
-          Get.to(()=> SetPasswordScreen(email:widget.email, otp:_pinTEController.text));
-        }
-      }
-      else{
-        if(mounted){
-          setState(() {});
-          showSnackBarMessage(context, response.errorMessage ?? "Couldn't verify OTP, please try again!");
-        }
-      }
-    }else{
+    final bool response = await _pinVerificationController.pinVerification(widget.email, _pinTEController.text);
+    if(response){
       if(mounted){
-        showSnackBarMessage(context, response.errorMessage ?? 'OTP verification failed, please try again!');
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //       builder: (context)=> SetPasswordScreen (email:widget.email, otp:_pinTEController.text), //SetPasswordScreen
+        // ));
+        Get.to(()=> SetPasswordScreen(email:widget.email, otp:_pinTEController.text));
       }
     }
+    // _pinVerificationInProgress =true;
+    // setState(() {});
+    // final ResponseObject response = await NetworkCaller.getRequest(Urls.recoverVerifyOTP(widget.email,_pinTEController.text));
+    // _pinVerificationInProgress =false;
+    // setState(() {});
+    // if(response.isSuccess){ // response.isSuccess==true, when response.statusCode==200
+    //   if(response.responseBody["status"]=="success"){
+    //     if(mounted){
+    //       // Navigator.push(
+    //       //   context,
+    //       //   MaterialPageRoute(
+    //       //       builder: (context)=> SetPasswordScreen (email:widget.email, otp:_pinTEController.text), //SetPasswordScreen
+    //       // ));
+    //       Get.to(()=> SetPasswordScreen(email:widget.email, otp:_pinTEController.text));
+    //     }
+    //   }
+    //   else{
+    //     if(mounted){
+    //       setState(() {});
+    //       showSnackBarMessage(context, response.errorMessage ?? "Couldn't verify OTP, please try again!");
+    //     }
+    //   }
+    // }else{
+    //   if(mounted){
+    //     showSnackBarMessage(context, response.errorMessage ?? 'OTP verification failed, please try again!');
+    //   }
+    // }
 
   }
 
@@ -175,6 +201,4 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> { // otp 
     _formKey.currentState?.dispose();
     super.dispose();
   }
-
-
 }

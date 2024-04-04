@@ -4,8 +4,11 @@ import 'package:task_manager_getx/presentation/controllers/cancelled_task_contro
 import 'package:task_manager_getx/presentation/controllers/completed_task_controller.dart';
 import 'package:task_manager_getx/presentation/controllers/count_task_by_status_controller.dart';
 import 'package:task_manager_getx/presentation/controllers/delete_task_controller.dart';
+import 'package:task_manager_getx/presentation/controllers/email_verification_controller.dart';
 import 'package:task_manager_getx/presentation/controllers/new_task_controller.dart';
+import 'package:task_manager_getx/presentation/controllers/pin_verification_controller.dart';
 import 'package:task_manager_getx/presentation/controllers/progress_task_controller.dart';
+import 'package:task_manager_getx/presentation/controllers/set_password_controller.dart';
 import 'package:task_manager_getx/presentation/controllers/sign_in_controller.dart';
 import 'package:task_manager_getx/presentation/controllers/sign_up_controller.dart';
 import 'package:task_manager_getx/presentation/controllers/update_profile_controller.dart';
@@ -27,5 +30,8 @@ class ControllerBinder extends Bindings {
     Get.lazyPut(() => DeleteTaskController(),fenix: true);
     Get.lazyPut(() => AddNewTaskController(),fenix: true);
     Get.lazyPut(() => UpdateProfileController(),fenix: true);
+    Get.lazyPut(() => EmailVerificationController(),fenix: true);
+    Get.lazyPut(() => PinVerificationController(),fenix: true);
+    Get.lazyPut(() => SetPasswordController(),fenix: true);
   }
 }
