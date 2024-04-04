@@ -118,7 +118,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                     width: double.infinity,
                     child: GetBuilder<UpdateProfileController>(
                       builder: (updateProfileController) {
-                        return Visibility( // ----------------------------------------------------------------------------------------
+                        return Visibility(
                           visible: updateProfileController.inProgress==false,
                           replacement: const Center(child: CircularProgressIndicator(),),
                           child: ElevatedButton(
@@ -129,18 +129,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
                           ),
                         );
                       },
-
                     ),
-                    // child: Visibility( // ----------------------------------------------------------------------------------------
-                    //   visible: _updateProfileInProgress==false,
-                    //   replacement: const Center(child: CircularProgressIndicator(),),
-                    //   child: ElevatedButton(
-                    //     onPressed: () {
-                    //       _updateProfile();
-                    //     },
-                    //     child: const Icon(Icons.arrow_forward_ios_rounded),
-                    //   ),
-                    // ),
                   ),
                 ],
               ),
@@ -201,8 +190,6 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   }
   Future <void> _updateProfile()async{ //------------------------------------------------------------------------------
     String? photo;
-    // _updateProfileInProgress =true;
-    // setState(() {});
     Map<String,dynamic> inputParams ={
       "email":_emailTEController.text,
       "firstName":_firstNameTEController.text.trim(),
