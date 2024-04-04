@@ -3,12 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:task_manager_getx/data/models/response_object.dart';
 import 'package:task_manager_getx/presentation/controllers/auth_controller.dart';
+import 'package:task_manager_getx/presentation/controllers/update_profile_controller.dart';
 import 'package:task_manager_getx/presentation/screens/main_bottom_nav_screen.dart';
-import 'package:task_manager_getx/presentation/widgets/snack_bar_message.dart';
 import '../../data/models/user_data.dart';
-import '../../data/services/network_caller.dart';
-import '../../data/utility/urls.dart';
 import '../widgets/background_widget.dart';
 import '../widgets/profile_app_bar.dart';
 
@@ -21,7 +20,7 @@ class UpdateProfileScreen extends StatefulWidget {
   State<UpdateProfileScreen> createState() => _UpdateProfileScreenState();
 }
 
-class _UpdateProfileScreenState extends State<UpdateProfileScreen> { // <----------- hashcode/key ? ==? route.settings.hashcode/key (?)
+class _UpdateProfileScreenState extends State<UpdateProfileScreen> {
   final _emailTEController = TextEditingController();
   final _firstNameTEController = TextEditingController();
   final _lastNameTEController = TextEditingController();
@@ -29,7 +28,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> { // <-------
   final _passwordTEController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   XFile? _pickedImage;
-  bool _updateProfileInProgress =false;
+  final _updateProfileController = Get.find<UpdateProfileController>();
   @override
   void initState() {
     super.initState();
@@ -117,16 +116,31 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> { // <-------
                   const SizedBox(height: 16,),
                   SizedBox(
                     width: double.infinity,
-                    child: Visibility(
-                      visible: _updateProfileInProgress==false,
-                      replacement: const Center(child: CircularProgressIndicator(),),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          _updateProfile();
-                        },
-                        child: const Icon(Icons.arrow_forward_ios_rounded),
-                      ),
+                    child: GetBuilder<UpdateProfileController>(
+                      builder: (updateProfileController) {
+                        return Visibility( // ----------------------------------------------------------------------------------------
+                          visible: updateProfileController.inProgress==false,
+                          replacement: const Center(child: CircularProgressIndicator(),),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              _updateProfile();
+                            },
+                            child: const Icon(Icons.arrow_forward_ios_rounded),
+                          ),
+                        );
+                      },
+
                     ),
+                    // child: Visibility( // ----------------------------------------------------------------------------------------
+                    //   visible: _updateProfileInProgress==false,
+                    //   replacement: const Center(child: CircularProgressIndicator(),),
+                    //   child: ElevatedButton(
+                    //     onPressed: () {
+                    //       _updateProfile();
+                    //     },
+                    //     child: const Icon(Icons.arrow_forward_ios_rounded),
+                    //   ),
+                    // ),
                   ),
                 ],
               ),
@@ -154,7 +168,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> { // <-------
                   topLeft: Radius.circular(8),
                   bottomLeft: Radius.circular(8),
                 ), // do left only
-                //shape: RoundedRectangleBorder, -------------------------
+                //shape: RoundedRectangleBorder,
               ),
               child: const Center(
                 child: Text(
@@ -185,10 +199,10 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> { // <-------
     _pickedImage= await imagePicker.pickImage(source: ImageSource.gallery);
     setState(() {});
   }
-  Future <void> _updateProfile()async{
+  Future <void> _updateProfile()async{ //------------------------------------------------------------------------------
     String? photo;
-    _updateProfileInProgress =true;
-    setState(() {});
+    // _updateProfileInProgress =true;
+    // setState(() {});
     Map<String,dynamic> inputParams ={
       "email":_emailTEController.text,
       "firstName":_firstNameTEController.text.trim(),
@@ -206,9 +220,7 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> { // <-------
       String photo = base64Encode(bytes); //---------------------------------------------------
       inputParams['photo']= photo;
     }
-    final response = await NetworkCaller.postRequest(Urls.updateProfile, inputParams);
-    _updateProfileInProgress=false;
-    setState(() {}); ///
+    final ResponseObject response = await _updateProfileController.updateProfile(inputParams);
     if(response.isSuccess){
       if(response.responseBody['status']=='success'){
         UserData userData= UserData(
@@ -220,20 +232,21 @@ class _UpdateProfileScreenState extends State<UpdateProfileScreen> { // <-------
         );
         await AuthController.saveUserData(userData);
         //AuthController.userData?.photo = photo; //didn't work -----------------
-        print("AuthController.saveUserData() called------------------------------------------------");
+        //print("AuthController.saveUserData() called------------------------------------------------");
       }else{
-        print("false is: response.responseBody['status']=='success'----------------------------------------");
+        //print("false is: response.responseBody['status']=='success'----------------------------------------");
       }
       //setState(() {}); ///
       if(mounted){
         //Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context)=>const MainBottomNavScreen()),(route) => false);
         Get.offAll(()=> const MainBottomNavScreen());
       }
-    }else{
-      if(mounted){
-        showSnackBarMessage(context, 'Update Profile failed, try again');
-      }
     }
+    // else{ // <--- shown in getx controller
+    //   if(mounted){
+    //     showSnackBarMessage(context, 'Update Profile failed, try again');
+    //   }
+    // }
   }
   @override
   void dispose() {

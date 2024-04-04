@@ -26,7 +26,7 @@ class _TaskManagerState extends State<TaskManager> {
       routes: {  // ---------------> hash routing
         '/':(context)=> const SplashScreen(),
         //'/signIn':(context)=> SignInScreen(),
-        '/updateProfileScreen':(context)=> const UpdateProfileScreen(),
+        '/updateProfileScreen':(context)=> UpdateProfileScreen(),
       },
       theme: _themeData,
       initialBinding: ControllerBinder(), //------------------------------------

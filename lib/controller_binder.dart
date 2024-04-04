@@ -8,6 +8,7 @@ import 'package:task_manager_getx/presentation/controllers/new_task_controller.d
 import 'package:task_manager_getx/presentation/controllers/progress_task_controller.dart';
 import 'package:task_manager_getx/presentation/controllers/sign_in_controller.dart';
 import 'package:task_manager_getx/presentation/controllers/sign_up_controller.dart';
+import 'package:task_manager_getx/presentation/controllers/update_profile_controller.dart';
 import 'package:task_manager_getx/presentation/controllers/update_task_controller.dart';
 
 class ControllerBinder extends Bindings {
@@ -25,5 +26,6 @@ class ControllerBinder extends Bindings {
     Get.lazyPut(() => UpdateTaskController(),fenix: true);
     Get.lazyPut(() => DeleteTaskController(),fenix: true);
     Get.lazyPut(() => AddNewTaskController(),fenix: true);
+    Get.lazyPut(() => UpdateProfileController(),fenix: true);
   }
 }

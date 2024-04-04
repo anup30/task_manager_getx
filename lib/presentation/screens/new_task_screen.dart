@@ -37,8 +37,6 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
     Get.find<CountTaskByStatusController>().getCountByTaskStatus();
     Get.find<NewTaskController>().getNewTaskList();
   }
-  // add edit task status controller
-  // add delete task controller
   @override
   Widget build(BuildContext context) {
     return Scaffold(

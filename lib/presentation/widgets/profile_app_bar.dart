@@ -10,13 +10,13 @@ PreferredSizeWidget get profileAppBar{ // top level function, not a class //--- 
 //PreferredSizeWidget profileAppBar(BuildContext context){ // no get, get can't receive arguments
   MemoryImage? imageForCircleAvatar(){
     try{
-      print("in try block, -----------------------------------------------------------------");
-      print("AuthController.userData?.photo= ${AuthController.userData?.photo}"); // null
-      print("\n\n\n");
+      // print("in try block, -----------------------------------------------------------------");
+      // print("AuthController.userData?.photo= ${AuthController.userData?.photo}"); // null
+      // print("\n\n\n");
       return MemoryImage(base64Decode(AuthController.userData!.photo!));
     }catch(e){
-      print("in catch block, -----------------------------------------------------------------");
-      print("$e");
+      // print("in catch block, -----------------------------------------------------------------");
+      // print("$e");
       return null;
     }
   }
@@ -26,7 +26,7 @@ PreferredSizeWidget get profileAppBar{ // top level function, not a class //--- 
     title: GestureDetector(
       onTap: () {
         if(UpdateProfileScreen.isThisPageOnNavigatorTop==false){
-          Get.to(()=> const UpdateProfileScreen());
+          Get.to(()=> UpdateProfileScreen());
         }
         /*//also worked!
         const newRouteName = '/updateProfileScreen';
