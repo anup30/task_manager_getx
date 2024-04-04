@@ -97,8 +97,6 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
                                       _confirmPasswordTEController.text) {
                                     _recoverResetPassword();
                                   } else {
-                                    //if(mounted){
-                                    //setState(() {});
                                     showSnackBarMessage(context,
                                         "Passwords didn't match, please try again!");
                                     //}
@@ -110,25 +108,6 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
                           );
                         }
                     ),
-                    // child: Visibility( //--------------------------------------------
-                    //   visible: _recoverResetPasswordInProgress==false,
-                    //   replacement: const Center(child: CircularProgressIndicator(),),
-                    //   child: ElevatedButton(
-                    //     onPressed: () {
-                    //       if(_formKey.currentState!.validate()){
-                    //         if(_passwordTEController.text == _confirmPasswordTEController.text){
-                    //           _recoverResetPassword();
-                    //         }else{
-                    //           if(mounted){
-                    //             setState(() {});
-                    //             showSnackBarMessage(context, "Passwords didn't match, please try again!");
-                    //           }
-                    //         }
-                    //       }
-                    //     },
-                    //     child: const Text('Confirm'),
-                    //   ),
-                    // ),
                   ),
                   const SizedBox(height: 32,),
                   Row(
@@ -169,7 +148,6 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
   }
 
   Future<void> _recoverResetPassword() async {
-    //_recoverResetPasswordInProgress = true;
     setState(() {});
     Map<String, dynamic> inputParams = {
       "email": widget.email,
@@ -190,32 +168,5 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
               Get.offAll(()=> const SignInScreen());
             }
       }
-      // final ResponseObject response = await NetworkCaller.postRequest(Urls.recoverResetPassword,inputParams);
-      // _recoverResetPasswordInProgress=false;
-      // if(response.isSuccess){ // response.isSuccess==true, when response.statusCode==200
-      //   if(response.responseBody["status"]=="success"){
-      //     if (mounted) {
-      //       // Navigator.pushAndRemoveUntil(
-      //       //   context,
-      //       //   MaterialPageRoute(
-      //       //     builder: (context) => const SignInScreen(),
-      //       //   ),
-      //       //   (route) => false,
-      //       // );
-      //       Get.offAll(()=> const SignInScreen());
-      //     }
-      //   }else{
-      //     if(mounted){
-      //       setState(() {});
-      //       showSnackBarMessage(context, response.errorMessage ?? "Couldn't Reset Password, please try again!");
-      //     }
-      //   }
-      // }else{
-      //   if(mounted){
-      //     setState(() {});
-      //     showSnackBarMessage(context, response.errorMessage ?? 'Password Reset failed, please try again!');
-      //   }
-      // }
     }
   }
-//}

@@ -112,34 +112,6 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
         Get.to(()=> PinVerificationScreen(email:_emailTEController.text.trim()));
       }
     }
-
-    // _verifyEmailInProgress =true;
-    // setState(() {});
-    // final ResponseObject response = await NetworkCaller.getRequest(Urls.recoverVerifyEmail(email));
-    // _verifyEmailInProgress =false;
-    // setState(() {});
-    // if(response.isSuccess){ // response.isSuccess==true, when response.statusCode==200
-    //   if(response.responseBody["status"]=="success"){
-    //     if(mounted){
-    //       // Navigator.push(
-    //       //     context,
-    //       //     MaterialPageRoute(
-    //       //         builder: (context)=> PinVerificationScreen(email:email)),
-    //       // );
-    //       Get.to(()=> PinVerificationScreen(email:email));
-    //     }
-    //   }else{
-    //     if(mounted){
-    //       setState(() {});
-    //       showSnackBarMessage(context, response.errorMessage ?? "Couldn't verify email, please try again!");
-    //     }
-    //   }
-    // }else{
-    //   if(mounted){
-    //     setState(() {});
-    //     showSnackBarMessage(context, response.errorMessage ?? 'Email verification failed, please try again!');
-    //   }
-    // }
   }
 
   @override

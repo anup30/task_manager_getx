@@ -109,19 +109,6 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> { // otp 
                               ),
                             );
                           }),
-                    // child: Visibility( //---------
-                    //   visible: _pinVerificationInProgress ==false,
-                    //   replacement: const Center(child: CircularProgressIndicator(),),
-                    //   child: ElevatedButton(
-                    //     onPressed: (){
-                    //       //to do: go to SetPasswordScreen if 6 digit pin is correct.
-                    //       if(_formKey.currentState!.validate()){
-                    //         _pinVerification();
-                    //       }
-                    //     },
-                    //     child: const Text('Verify'), // go to set password page
-                    //   ),
-                    // ),
                   ),
                   const SizedBox(height: 32,),
                   Row(
@@ -165,34 +152,6 @@ class _PinVerificationScreenState extends State<PinVerificationScreen> { // otp 
         Get.to(()=> SetPasswordScreen(email:widget.email, otp:_pinTEController.text));
       }
     }
-    // _pinVerificationInProgress =true;
-    // setState(() {});
-    // final ResponseObject response = await NetworkCaller.getRequest(Urls.recoverVerifyOTP(widget.email,_pinTEController.text));
-    // _pinVerificationInProgress =false;
-    // setState(() {});
-    // if(response.isSuccess){ // response.isSuccess==true, when response.statusCode==200
-    //   if(response.responseBody["status"]=="success"){
-    //     if(mounted){
-    //       // Navigator.push(
-    //       //   context,
-    //       //   MaterialPageRoute(
-    //       //       builder: (context)=> SetPasswordScreen (email:widget.email, otp:_pinTEController.text), //SetPasswordScreen
-    //       // ));
-    //       Get.to(()=> SetPasswordScreen(email:widget.email, otp:_pinTEController.text));
-    //     }
-    //   }
-    //   else{
-    //     if(mounted){
-    //       setState(() {});
-    //       showSnackBarMessage(context, response.errorMessage ?? "Couldn't verify OTP, please try again!");
-    //     }
-    //   }
-    // }else{
-    //   if(mounted){
-    //     showSnackBarMessage(context, response.errorMessage ?? 'OTP verification failed, please try again!');
-    //   }
-    // }
-
   }
 
   @override
