@@ -180,15 +180,15 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
         inputParams);
     if (response) {
       if (mounted) {
-        //       // Navigator.pushAndRemoveUntil(
-        //       //   context,
-        //       //   MaterialPageRoute(
-        //       //     builder: (context) => const SignInScreen(),
-        //       //   ),
-        //       //   (route) => false,
-        //       // );
-        //       Get.offAll(()=> const SignInScreen());
-        //     }
+              // Navigator.pushAndRemoveUntil(
+              //   context,
+              //   MaterialPageRoute(
+              //     builder: (context) => const SignInScreen(),
+              //   ),
+              //   (route) => false,
+              // );
+              Get.offAll(()=> const SignInScreen());
+            }
       }
       // final ResponseObject response = await NetworkCaller.postRequest(Urls.recoverResetPassword,inputParams);
       // _recoverResetPasswordInProgress=false;
@@ -218,4 +218,4 @@ class _SetPasswordScreenState extends State<SetPasswordScreen> {
       // }
     }
   }
-}
+//}
