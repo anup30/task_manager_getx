@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:task_manager_getx/presentation/controllers/add_new_task_controller.dart';
 import 'package:task_manager_getx/presentation/widgets/background_widget.dart';
 import 'package:task_manager_getx/presentation/widgets/profile_app_bar.dart';
-import 'package:task_manager_getx/presentation/widgets/snack_bar_message.dart';
 
-import '../../data/services/network_caller.dart';
-import '../../data/utility/urls.dart';
 
 class AddNewTaskScreen extends StatefulWidget {
   const AddNewTaskScreen({super.key});
@@ -15,11 +13,12 @@ class AddNewTaskScreen extends StatefulWidget {
 }
 
 class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
-  bool _wasNewIemAdded =false; //_shouldRefreshNewTaskList
+  bool _wasNewIemAdded_0 =false; //_shouldRefreshNewTaskList
+  bool _wasNewIemAdded_1 =false;
   final _titleTEController = TextEditingController();
   final _descriptionTEController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  bool _addNewTaskInProgress= false;
+  final _addNewTaskController = Get.find<AddNewTaskController>();
   @override
   Widget build(BuildContext context) {
     return PopScope( // <- new version of WillPopScope
@@ -27,10 +26,10 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
       onPopInvoked: (bool didPop){
         if(didPop){return;}
         //Navigator.pop(context,_wasNewIemAdded);
-        Get.back(result: _wasNewIemAdded);
+        Get.back(result: _wasNewIemAdded_0);
       },
       child: Scaffold(
-        appBar: profileAppBar, // to hide back button from appBar, use automaticallyImplyLeading: false,
+        appBar: profileAppBar, //to hide back button from appBar, used automaticallyImplyLeading: false,
         body: BackgroundWidget(
           child: SingleChildScrollView(
             child: Padding(
@@ -74,23 +73,28 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
                     const SizedBox(height: 16,),
                     SizedBox(
                       width: double.infinity,
-                      child: Visibility(
-                        visible: _addNewTaskInProgress==false,
-                        replacement: const Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if(_formKey.currentState!.validate()){
-                              _addNewTask();
-                            }
-                          },
-                          child: const Icon(Icons.arrow_forward_ios_rounded),
-                        ),
+                      child: GetBuilder<AddNewTaskController>(
+                        builder: (addNewTaskController){
+                          return Visibility( // <-- wrapped with GetBuilder
+                            visible: addNewTaskController.inProgress==false,
+                            replacement: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                            child: ElevatedButton(
+                              onPressed: () {
+                                if(_formKey.currentState!.validate()){
+                                  _addNewTask();
+                                }
+                              },
+                              child: const Icon(Icons.arrow_forward_ios_rounded),
+                            ),
+                          );
+                        },
                       ),
+                      //child:
                     ),
                     const SizedBox(height: 16,),
-                    /*Center( // try the way as class
+                    /*Center( // instead of back button, try the way as shown in class
                       child: ElevatedButton(
                         onPressed: (){Navigator.pop(context,_wasNewIemAdded);},
                         child: const Text('go back'),
@@ -106,30 +110,17 @@ class _AddNewTaskScreenState extends State<AddNewTaskScreen> {
     );
   }
   Future<void> _addNewTask()async{
-    _addNewTaskInProgress=true;
-    setState(() {});
+    // _addNewTaskInProgress=true;
+    // setState(() {});
     Map<String,dynamic> inputParams ={
       "title":_titleTEController.text.trim(),
       "description":_descriptionTEController.text.trim(),
       "status":"New"
     };
-    final response =
-      await NetworkCaller.postRequest(Urls.createTask, inputParams);
-    _addNewTaskInProgress=false;
-    setState(() {});
-    if(response.isSuccess){
-      _wasNewIemAdded =true;
-      _titleTEController.clear();
-      _descriptionTEController.clear();
-      if(mounted){
-        showSnackBarMessage(context,'new task has been added');
-      }
-    }else{
-      if(mounted){
-        showSnackBarMessage(
-            context,
-            response.errorMessage ?? 'failed to add new task!',true);
-      }
+    _wasNewIemAdded_1 = await _addNewTaskController.addNewTask(inputParams);
+    // last addition can fail, while previous addition can be success, _wasNewIemAdded_0 is ture at least 1 item added successfully
+    if(_wasNewIemAdded_1){
+      _wasNewIemAdded_0=true;
     }
   }
   @override

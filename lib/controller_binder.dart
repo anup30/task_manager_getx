@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:task_manager_getx/presentation/controllers/add_new_task_controller.dart';
 import 'package:task_manager_getx/presentation/controllers/cancelled_task_controller.dart';
 import 'package:task_manager_getx/presentation/controllers/completed_task_controller.dart';
 import 'package:task_manager_getx/presentation/controllers/count_task_by_status_controller.dart';
@@ -23,5 +24,6 @@ class ControllerBinder extends Bindings {
     Get.lazyPut(() => CancelledTaskController(),fenix: true);
     Get.lazyPut(() => UpdateTaskController(),fenix: true);
     Get.lazyPut(() => DeleteTaskController(),fenix: true);
+    Get.lazyPut(() => AddNewTaskController(),fenix: true);
   }
 }
