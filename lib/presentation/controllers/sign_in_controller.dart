@@ -19,7 +19,7 @@ class SignInController extends GetxController{
       "email":email,
       "password":password,
     };
-    final ResponseObject response = (await NetworkCaller.postRequest(Urls.login, inputParams, fromSignIn: true));
+    final ResponseObject response = await NetworkCaller.postRequest(Urls.login, inputParams, fromSignIn: true);
     if(response.isSuccess){
       LoginResponse loginResponse = LoginResponse.fromJson(response.responseBody);
       /// save the data to local cache

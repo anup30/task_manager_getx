@@ -17,8 +17,8 @@ class TaskManager extends StatefulWidget {
 class _TaskManagerState extends State<TaskManager> {
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp( // was MaterialApp ----------------------------------
-      navigatorKey: TaskManager.navigatorKey, //---------------------------------- will be needed for getx ?
+    return GetMaterialApp( // was MaterialApp ---
+      navigatorKey: TaskManager.navigatorKey,
       //navigatorObservers: [],
       title: "Task Manager",
       //home: const SplashScreen(),
@@ -26,10 +26,10 @@ class _TaskManagerState extends State<TaskManager> {
       routes: {  // ---------------> hash routing
         '/':(context)=> const SplashScreen(),
         //'/signIn':(context)=> SignInScreen(),
-        '/updateProfileScreen':(context)=> UpdateProfileScreen(),
+        '/updateProfileScreen':(context)=> const UpdateProfileScreen(),
       },
       theme: _themeData,
-      initialBinding: ControllerBinder(), //------------------------------------
+      initialBinding: ControllerBinder(), // ---
     );
   }
   final ThemeData _themeData = ThemeData(
@@ -72,7 +72,7 @@ class _TaskManagerState extends State<TaskManager> {
       //titleMedium: TextStyle(fontSize: 24, fontWeight: FontWeight.w600,),
     ),
     chipTheme: ChipThemeData(
-      //shape: CircleBorder(), //---------------------------------------------
+      //shape: CircleBorder(), // ---
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50),),
       backgroundColor: Colors.cyan,
       side: BorderSide.none,

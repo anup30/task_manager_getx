@@ -1,7 +1,8 @@
+// updating for vew version of api, 11.10.24,
 class Urls{
-  static const String _baseUrl = 'https://task.teamrabbil.com/api/v1';
-  static String registration = '$_baseUrl/registration';
-  static String login = '$_baseUrl/login';
+  static const String _baseUrl = "http://152.42.163.176:2006/api/v1"; //'https://task.teamrabbil.com/api/v1';
+  static String registration = '$_baseUrl/registration'; // "/Registration"
+  static String login = '$_baseUrl/login'; // "/Login"
   static String createTask= '$_baseUrl/createTask';
   static String taskCountByStatus = '$_baseUrl/taskStatusCount';
   static String newTaskList = '$_baseUrl/listTaskByStatus/New';

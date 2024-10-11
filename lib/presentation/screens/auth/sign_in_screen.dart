@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:task_manager_getx/presentation/controllers/sign_in_controller.dart';
@@ -72,7 +74,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         child: GetBuilder<SignInController>(
                           builder: (signInController){
                             return Visibility(
-                              visible: signInController.inProgress==false,
+                              visible: signInController.inProgress==false, //-------------------
                               replacement: const Center(
                                 child: CircularProgressIndicator(),
                               ),
@@ -131,13 +133,14 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   Future<void> _signIn() async{
-    final result= await _signInController.signIn(_emailTEController.text.trim(), _passwordTEController.text);
+    final result= await _signInController.signIn(_emailTEController.text.trim(), _passwordTEController.text); // bool result
     if(result){
       if(mounted){
         // Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context) => const MainBottomNavScreen()),(route) => false,);
         Get.offAll(()=> const MainBottomNavScreen());
         //Get.to(()=> const MainBottomNavScreen()); // not this, but trying fix error. -------------------------
       }
+      log("not mounted! -----------------------------------");
       return; /// gap ? ---------------------- <
     }else{
       if(mounted){
